@@ -1,0 +1,61 @@
+{
+  "name": "opencode-univibe-auth",
+  "version": "0.1.0",
+  "description": "Use Univibe models and monitor daily credits in Magpie and OpenCode.",
+  "keywords": [
+    "auth",
+    "magpie",
+    "magpie-plugin",
+    "opencode",
+    "opencode-plugin",
+    "univibe"
+  ],
+  "homepage": "https://github.com/chansyawn/magpie-univibe-auth#readme",
+  "bugs": {
+    "url": "https://github.com/chansyawn/magpie-univibe-auth/issues"
+  },
+  "license": "MIT",
+  "author": "chansyawn",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chansyawn/magpie-univibe-auth.git"
+  },
+  "files": [
+    "index.ts",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "check": "vp check",
+    "fmt": "vp fmt",
+    "test": "vp test"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2",
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.18.0",
+      "onFail": "download"
+    }
+  },
+  "magpie": {
+    "name": "Univibe",
+    "icon": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23111111'/%3E%3Cpath d='M14 20l8 25 10-18 10 18 8-25' fill='none' stroke='%23ff7a18' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+    "summary": {
+      "en": "Use a Univibe subscription in Magpie with credits and daily reset.",
+      "zh": "在 Magpie 中使用 Univibe 订阅，并显示积分与每日自动重置。"
+    },
+    "maxConcurrency": 2
+  }
+}
