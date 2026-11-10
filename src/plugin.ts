@@ -313,7 +313,7 @@ export async function UnivibeAuthPlugin(input: PluginInput) {
           throw error;
         }
       },
-      maxConcurrency: 2,
+      maxConcurrency: 4,
     },
   };
 }

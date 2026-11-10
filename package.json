@@ -1,6 +1,6 @@
 {
   "name": "magpie-univibe-auth",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Use Univibe models and monitor daily credits in Magpie and OpenCode.",
   "keywords": [
     "auth",
@@ -56,6 +56,6 @@
       "en": "Use a Univibe subscription in Magpie with credits and daily reset.",
       "zh": "在 Magpie 中使用 Univibe 订阅，并显示积分与每日自动重置。"
     },
-    "maxConcurrency": 2
+    "maxConcurrency": 4
   }
 }
