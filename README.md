@@ -9,7 +9,7 @@
 - 每天北京时间 23:55 执行最后一次补满。
 - 根据 UniVibe 的 `last_reset_date` 保证同一北京日不重复重置。
 
-包名是 `opencode-univibe-auth`，插件声明的供应商 ID 是 `univibe`。如果本机已经有一个名为 `univibe` 的普通供应商，Magpie 会按约定把插件供应商命名为 `univibe-plugin`，以免两套模型和额度混在一起。
+包名是 `magpie-univibe-auth`，插件声明的供应商 ID 是 `univibe`。如果本机已经有一个名为 `univibe` 的普通供应商，Magpie 会按约定把插件供应商命名为 `univibe-plugin`，以免两套模型和额度混在一起。
 
 ## 安装
 
