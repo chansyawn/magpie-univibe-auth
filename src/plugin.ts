@@ -179,10 +179,12 @@ export async function UnivibeAuthPlugin(input: PluginInput) {
     now: Date.now,
   };
   const coordinator = resetCoordinator(dependencies);
+  const isMagpie = "magpie" in input;
 
   async function authMethodsAuthorize(inputs: Record<string, string> = {}): Promise<
     | {
         type: "success";
+        key?: string;
         metadata: {
           phone: string;
           password: string;
@@ -192,6 +194,10 @@ export async function UnivibeAuthPlugin(input: PluginInput) {
       }
     | { type: "failed"; error: string }
   > {
+    const apiKey = inputs.apiKey?.trim() ?? "";
+    if (isMagpie && !apiKey) {
+      return { type: "failed", error: "请输入 Univibe API Key" };
+    }
     const phone = inputs.phone?.trim() ?? "";
     const password = inputs.password ?? "";
     if (!phone || !password) {
@@ -201,6 +207,7 @@ export async function UnivibeAuthPlugin(input: PluginInput) {
       const login = await loginWebsite(phone, password, dependencies.fetchImpl);
       return {
         type: "success",
+        ...(apiKey ? { key: apiKey } : {}),
         metadata: {
           phone,
           password,
@@ -255,6 +262,17 @@ export async function UnivibeAuthPlugin(input: PluginInput) {
           label: "Univibe API Key + 手机号/密码",
           placeholder: "在 Univibe 控制台 → API密钥 中创建",
           prompts: [
+            ...(isMagpie
+              ? [
+                  {
+                    type: "password" as const,
+                    key: "apiKey",
+                    message: "Univibe API Key",
+                    placeholder: "在 Univibe 控制台 → API密钥 中创建",
+                    validate: (value: string) => (value.trim() ? undefined : "API Key 不能为空"),
+                  },
+                ]
+              : []),
             {
               type: "text" as const,
               key: "phone",

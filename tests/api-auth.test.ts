@@ -1,5 +1,6 @@
-import { expect, test } from "vite-plus/test";
+import { expect, test, vi } from "vite-plus/test";
 import { loadCredits } from "../src/auth.ts";
+import { UnivibeAuthPlugin } from "../src/plugin.ts";
 import type { FetchLike } from "../src/univibe-api.ts";
 import { loginWebsite } from "../src/univibe-api.ts";
 import type { StoredAuth } from "../src/types.ts";
@@ -42,6 +43,38 @@ test("website login parses a successful login envelope", async () => {
       email: null,
     },
   });
+});
+
+test("Magpie can sign in with only the plugin's form answers", async () => {
+  const mockFetch = vi.fn<FetchLike>().mockResolvedValue(json({ token: "web-token" }));
+  vi.stubGlobal("fetch", mockFetch);
+  try {
+    const input = { client: { auth: { set: vi.fn() } }, magpie: {} };
+    const { auth } = await UnivibeAuthPlugin(input);
+    const [method] = auth.methods;
+    expect(method?.prompts).toContainEqual(
+      expect.objectContaining({ type: "password", key: "apiKey" }),
+    );
+    const credentials = { phone: "13800000000", password: "password" };
+    expect(await method?.authorize(credentials)).toEqual({
+      type: "failed",
+      error: "请输入 Univibe API Key",
+    });
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(await method?.authorize({ ...credentials, apiKey: " sk-test " })).toEqual({
+      type: "success",
+      key: "sk-test",
+      metadata: { ...credentials, token: "web-token" },
+    });
+    expect(mockFetch).toHaveBeenCalledWith(
+      "https://www.univibe.cc/api/auth/login",
+      expect.objectContaining({ body: JSON.stringify(credentials) }),
+    );
+    const openCode = await UnivibeAuthPlugin({ client: input.client });
+    expect(openCode.auth.methods[0]?.prompts.map(({ key }) => key)).toEqual(["phone", "password"]);
+  } finally {
+    vi.unstubAllGlobals();
+  }
 });
 
 test("an expired website token logs in once and persists the replacement", async () => {
